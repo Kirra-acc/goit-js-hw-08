@@ -1,30 +1,27 @@
+// import Player from '@vimeo/player/dist/player.esm.js';
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
-// const iframe = document.querySelector('iframe');
-// const player = new Player(iframe);
+// Ініціалізуй плеєр у файлі скрипта як це описано в секції pre-existing player, але враховуй, що у тебе плеєр доданий як npm пакет, а не через CDN.
+const iframe = document.querySelector('iframe');
+const player = new Player(iframe);
 
+// Вивчи документацію методу on() і почни відстежувати подію timeupdate - оновлення часу відтворення.
+// Зберігай час відтворення у локальне сховище. Нехай ключем для сховища буде рядок "videoplayer-current-time".
 // const onPlay = function ({ seconds }) {
 //   localStorage.setItem('videoplayer-current-time', `${seconds}`);
 // };
 
 // player.on('timeupdate', throttle(onPlay, 1000));
 
+const onTimeUpdate = throttle(function (data) {
+    localStorage.setItem('videoplayer-current-time', data.seconds);
+  }, 1000);
+  
+  player.on('timeupdate', onTimeUpdate);
+
 // const currentTime = Number(localStorage.getItem('videoplayer-current-time'));
+const currentTime = localStorage.getItem("videoplayer-current-time");
 
-// player.setCurrentTime(currentTime);
-
-const player = new Player('vimeo-player', {
-    id: 236203659,
-    width: 640,
-});
-
-player.on('timeupdate', throttle(onPlayerTimeUpdate, 1000));
-
-function onPlayerTimeUpdate(event) {
-    localStorage.setItem('videoplayer-current-time', `${event.seconds}`)
-};
-
-const resumePlayback = localStorage.getItem('videoplayer-current-time');
-if (resumePlayback) {
-player.setCurrentTime(resumePlayback);}
+// Під час перезавантаження сторінки скористайся методом setCurrentTime() з метою відновлення відтворення зі збереженої позиції.
+player.setCurrentTime(currentTime);
