@@ -3,7 +3,8 @@ import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
 // Ініціалізуй плеєр у файлі скрипта як це описано в секції pre-existing player, але враховуй, що у тебе плеєр доданий як npm пакет, а не через CDN.
-const iframe = document.querySelector('.iframe');
+const iframe = document.querySelector('#vimeo-player');
+console.log(iframe);
 const player = new Player(iframe);
 
 // Вивчи документацію методу on() і почни відстежувати подію timeupdate - оновлення часу відтворення.
